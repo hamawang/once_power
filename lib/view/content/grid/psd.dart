@@ -58,6 +58,7 @@ class _PsdViewState extends ConsumerState<PsdView> {
 
     Widget image = Image.memory(
       _imageData!,
+      key: ValueKey(widget.file.id),
       fit: BoxFit.contain,
       cacheWidth: ref.watch(viewImageWidthProvider),
       errorBuilder: (_, _, _) => ErrorImage(file: widget.file.path),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:once_power/model/file.dart';
 import 'package:once_power/provider/value.dart';
+import 'package:once_power/util/image.dart';
 
 import 'error.dart';
 import 'loading.dart';
@@ -15,10 +16,13 @@ class ImageView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget image = Image.file(
-      File(file.path),
+    Widget image = Image(
+      image: ResizeImage(
+        FileImageWithKey(File(file.path), file.id),
+        width: ref.watch(viewImageWidthProvider),
+      ),
       fit: BoxFit.contain,
-      cacheWidth: ref.watch(viewImageWidthProvider),
+      // cacheWidth: ref.watch(viewImageWidthProvider),
       gaplessPlayback: true,
       errorBuilder: (_, _, _) => ErrorImage(file: file.path),
       frameBuilder: (_, child, frame, wasSynchronouslyLoaded) {

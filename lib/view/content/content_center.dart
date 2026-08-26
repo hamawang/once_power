@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:once_power/core/list.dart';
 import 'package:once_power/core/move.dart';
+import 'package:once_power/core/update/update.dart';
 import 'package:once_power/enum/app.dart';
 import 'package:once_power/model/file.dart';
 import 'package:once_power/provider/file.dart';
@@ -63,6 +64,7 @@ class ContentCenter extends ConsumerWidget {
                 }
                 provider.clear();
               }
+              updateName(ref);
               break;
             case LogicalKeyboardKey.keyA when isControlPressed:
               final List<FileInfo> list = ref.read(sortListProvider);

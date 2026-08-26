@@ -5,6 +5,7 @@ import 'package:flutter_avif/flutter_avif.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:once_power/model/file.dart';
 import 'package:once_power/provider/value.dart';
+import 'package:once_power/util/image.dart';
 
 import 'error.dart';
 
@@ -15,9 +16,14 @@ class AvifView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Widget child = AvifImage.file(
-      File(file.path),
-      cacheWidth: ref.watch(viewImageWidthProvider),
+    Widget child = AvifImage(
+      image: ResizeImage(
+        FileAvifImageWithKey(File(file.path), file.id),
+        width: ref.watch(viewImageWidthProvider),
+      ),
+      // File(file.path),
+      // key: ValueKey(file.id + file.path),
+      // cacheWidth: ref.watch(viewImageWidthProvider),
       fit: BoxFit.contain,
       errorBuilder: (_, _, _) => ErrorImage(file: file.path),
       // placeholderBuilder: (context) => const LoadingImage(isPreview: true),
