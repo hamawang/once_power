@@ -13,6 +13,7 @@ import 'enum/app.dart';
 
 void main(List<String> args) async {
   await AppConfig.init(args);
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 512 << 20;
   runApp(
     ProviderScope(
       child: EasyLocalization(

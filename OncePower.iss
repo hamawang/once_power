@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "OncePower"
-#define MyAppVersion "3.2.3"
+#define MyAppVersion "3.2.4"
 #define MyAppPublisher "ilgnefz"
 #define MyAppURL "https://github.com/ilgnefz/once_power"
 #define MyAppExeName "once_power.exe"
@@ -52,7 +52,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\desktop_drop_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\ffmpeg-8.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\ffmpeg-9.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\file_selector_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\flutter_avif.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\WorkSpace\Desktop\once_power\build\windows\x64\runner\Release\flutter_avif_windows_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
