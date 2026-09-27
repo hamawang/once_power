@@ -19,12 +19,14 @@ class _IsolateData {
   final Uint8List snapshotData;
   final int width;
   final int height;
+  final int rotation;
 
   _IsolateData({
     required this.sendPort,
     required this.snapshotData,
     required this.width,
     required this.height,
+    this.rotation = 0,
   });
 }
 
@@ -159,6 +161,9 @@ class FileList extends _$FileList {
     return e;
   }).toList();
 
+  /// 视频封面统一压缩到的宽度
+  static const int _thumbnailWidth = 640;
+
   Future<void> generateVideoThumbnails({int concurrency = 5}) async {
     final noThumbnails = state
         .where((e) => e.type.isVideo && e.thumbnail == null)
@@ -216,6 +221,9 @@ class FileList extends _$FileList {
       final info = videoInfo[0].codec;
       final width = info.width;
       final height = info.height;
+      // 手机竖拍的视频多半是「横向像素 + rotation 元数据（90/270）」存的，
+      // snapshot() 拿到的是未旋转的原始帧，不处理的话竖屏视频的封面就是横的。
+      final rotation = videoInfo[0].rotation;
       final Uint8List? snapshot = await controller.snapshot();
       if (_cancelGeneration) return;
       if (snapshot == null || snapshot.isEmpty) {
@@ -228,6 +236,7 @@ class FileList extends _$FileList {
         snapshot.buffer.asUint8List(),
         width,
         height,
+        rotation: rotation,
       );
 
       if (_cancelGeneration) return;
@@ -249,8 +258,9 @@ class FileList extends _$FileList {
   Future<Uint8List> _generateThumbnailInIsolate(
     Uint8List snapshotData,
     int width,
-    int height,
-  ) async {
+    int height, {
+    int rotation = 0,
+  }) async {
     final receivePort = ReceivePort();
     await Isolate.spawn(
       _isolateGenerateThumbnail,
@@ -259,6 +269,7 @@ class FileList extends _$FileList {
         snapshotData: snapshotData,
         width: width,
         height: height,
+        rotation: rotation,
       ),
     );
     return await receivePort.first as Uint8List;
@@ -266,14 +277,25 @@ class FileList extends _$FileList {
 
   static void _isolateGenerateThumbnail(_IsolateData data) {
     try {
-      final image = img.Image.fromBytes(
+      img.Image image = img.Image.fromBytes(
         width: data.width,
         height: data.height,
         bytes: data.snapshotData.buffer,
         numChannels: 4,
         rowStride: data.width * 4,
       );
-      final Uint8List imageBytes = img.encodeJpg(image, quality: 85);
+      // 竖拍视频的画面方向存在 rotation 元数据里（顺时针角度），snapshot 拿到的是未旋转的原始帧，
+      // 必须先转正再缩放，否则封面方向就是错的。
+      final int rotation = data.rotation % 360;
+      if (rotation != 0) {
+        image = img.copyRotate(image, angle: rotation);
+      }
+      // 按原分辨率编码的话，1080p 一张缩略图就接近 8MB 位图，网格里几十个视频会吃掉几百 MB。
+      // 统一压到 640 宽（网格格子宽度的 2~3 倍，够清晰），常驻的字节数也随之降下来。
+      final img.Image target = image.width > _thumbnailWidth
+          ? img.copyResize(image, width: _thumbnailWidth)
+          : image;
+      final Uint8List imageBytes = img.encodeJpg(target, quality: 85);
       data.sendPort.send(imageBytes);
     } catch (e) {
       data.sendPort.send(Uint8List(0));

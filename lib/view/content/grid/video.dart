@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:once_power/core/dialog.dart';
 import 'package:once_power/model/file.dart';
+import 'package:once_power/provider/value.dart';
 import 'package:once_power/view/content/grid/loading.dart';
 import 'package:once_power/widget/common/click_icon.dart';
 
@@ -17,7 +18,7 @@ class VideoView extends ConsumerWidget {
     final thumbnail = file.thumbnail;
     if (thumbnail == null) return const LoadingImage(isPreview: false);
 
-    return thumbnail.isEmpty
+    Widget image = thumbnail.isEmpty
         ? ErrorImage(file: file.path)
         : ColoredBox(
             color: Colors.black,
@@ -25,7 +26,11 @@ class VideoView extends ConsumerWidget {
               fit: StackFit.expand,
               alignment: Alignment.center,
               children: [
-                Image.memory(thumbnail, fit: BoxFit.contain),
+                Image.memory(
+                  thumbnail,
+                  fit: BoxFit.contain,
+                  cacheWidth: ref.watch(viewImageWidthProvider),
+                ),
                 Positioned(
                   bottom: 2,
                   right: 2,
@@ -40,5 +45,8 @@ class VideoView extends ConsumerWidget {
               ],
             ),
           );
+
+    if (!file.checked) return Opacity(opacity: .5, child: image);
+    return image;
   }
 }
