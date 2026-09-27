@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:once_power/const/l10n.dart';
 import 'package:once_power/model/file.dart';
 import 'package:once_power/util/format.dart';
+import 'package:once_power/widget/base/tooltip.dart';
 import 'package:once_power/widget/common/tooltip.dart';
-import 'package:tolyui_feedback/toly_tooltip/tooltip_placement.dart';
 
 class TooltipItem extends StatelessWidget {
   const TooltipItem({
@@ -14,7 +14,7 @@ class TooltipItem extends StatelessWidget {
     required this.child,
   });
 
-  final Duration? waitDuration;
+  final Duration waitDuration;
   final FileInfo file;
   final Widget child;
 
@@ -34,7 +34,7 @@ class TooltipItem extends StatelessWidget {
     bool hasGroup = file.group != '';
 
     return EasyTooltip(
-      placement: Placement.bottom,
+      placement: TooltipDirection.down,
       waitDuration: waitDuration,
       // constraints: BoxConstraints(
       //   maxWidth: MediaQuery.of(context).size.width * .4,
@@ -46,29 +46,36 @@ class TooltipItem extends StatelessWidget {
       //     BoxShadow(blurRadius: 2, color: Colors.black.withOpacity(.2)),
       //   ],
       // ),
-      richMessage: TextSpan(
-        children: [
-          richTextTooltip(context, name, file.getFullOldName()),
-          richTextTooltip(context, newName, file.getFullNewName()),
-          richTextTooltip(context, folder, file.parent),
-          richTextTooltip(context, createTime, '${file.createdDate.date}'),
-          richTextTooltip(context, modifyDate, '${file.modifiedDate.date}'),
-          richTextTooltip(context, accessDate, '${file.accessedDate.date}'),
-          if (file.metaInfo?.capture != null)
+      richMessage: RichText(
+        text: TextSpan(
+          children: [
+            richTextTooltip(context, name, file.getFullOldName()),
+            richTextTooltip(context, newName, file.getFullNewName()),
+            richTextTooltip(context, folder, file.parent),
+            richTextTooltip(context, createTime, '${file.createdDate.date}'),
+            richTextTooltip(context, modifyDate, '${file.modifiedDate.date}'),
+            richTextTooltip(context, accessDate, '${file.accessedDate.date}'),
+            if (file.metaInfo?.capture != null)
+              richTextTooltip(
+                context,
+                captureDate,
+                '${file.metaInfo?.capture?.date}',
+              ),
+            if (file.resolution != null)
+              richTextTooltip(
+                context,
+                resolution,
+                formatResolution(file.resolution!),
+              ),
             richTextTooltip(
               context,
-              captureDate,
-              '${file.metaInfo?.capture?.date}',
+              size,
+              formatFileSize(file.size),
+              !hasGroup,
             ),
-          if (file.resolution != null)
-            richTextTooltip(
-              context,
-              resolution,
-              formatResolution(file.resolution!),
-            ),
-          richTextTooltip(context, size, formatFileSize(file.size), !hasGroup),
-          if (hasGroup) richTextTooltip(context, group, file.group, hasGroup),
-        ],
+            if (hasGroup) richTextTooltip(context, group, file.group, hasGroup),
+          ],
+        ),
       ),
       child: child,
     );

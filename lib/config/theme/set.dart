@@ -92,11 +92,15 @@ class AppTabBarTheme {
 }
 
 class AppTextTheme {
-  static TextTheme light() =>
-      TextTheme(bodyMedium: _textStyle.copyWith(color: AppColor.text));
+  static TextTheme light() => TextTheme(
+    bodyMedium: _textStyle.copyWith(color: AppColor.text),
+    bodySmall: _textStyle.copyWith(color: AppColor.text, fontSize: 13.0),
+  );
 
-  static TextTheme dark() =>
-      TextTheme(bodyMedium: _textStyle.copyWith(color: AppColor.textDark));
+  static TextTheme dark() => TextTheme(
+    bodyMedium: _textStyle.copyWith(color: AppColor.textDark),
+    bodySmall: _textStyle.copyWith(color: AppColor.textDark, fontSize: 13.0),
+  );
 }
 
 // Custom Widget Theme
@@ -106,7 +110,10 @@ class AppBottomTextTheme {
   );
 
   static BottomTextTheme dark() => BottomTextTheme(
-    textStyle: _textStyle.copyWith(fontSize: 13, color: AppColor.bottomText),
+    textStyle: _textStyle.copyWith(
+      fontSize: 13,
+      color: AppColor.bottomTextDark,
+    ),
   );
 }
 
@@ -182,9 +189,12 @@ class AppEasyChipTheme {
 
   static EasyChipTheme dark() => EasyChipTheme(
     textStyle: _textStyle.copyWith(color: AppColor.easyChipTextDark),
-    selectTextStyle: _textStyle.copyWith(color: AppColor.textDark),
+    // primaryDark 是亮紫，只能做前景；选中态背景改用深紫容器 + 浅紫文字
+    selectTextStyle: _textStyle.copyWith(
+      color: AppColor.onPrimaryContainerDark,
+    ),
     backgroundColor: AppColor.easyChipDark,
-    selectBackgroundColor: AppColor.primaryDark,
+    selectBackgroundColor: AppColor.primaryContainerDark,
   );
 }
 

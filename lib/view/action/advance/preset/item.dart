@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:once_power/const/num.dart';
+import 'package:once_power/widget/base/tooltip.dart';
 import 'package:once_power/widget/common/click_icon.dart';
 import 'package:once_power/widget/common/one_line_text.dart';
 import 'package:once_power/widget/common/tooltip.dart';
-import 'package:tolyui_feedback/toly_tooltip/tooltip_placement.dart';
 
 class PresetItem extends StatefulWidget {
   const PresetItem({
@@ -34,8 +34,8 @@ class _PresetItemState extends State<PresetItem> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: EasyTooltip(
         tip: widget.label,
-        waitDuration: widget.label.length > 5 ? .zero : null,
-        placement: Placement.right,
+        waitDuration: widget.label.length > 5 ? .zero : Duration(seconds: 600),
+        placement: TooltipDirection.right,
         child: MouseRegion(
           cursor: SystemMouseCursors.click,
           onEnter: (event) => setState(() => isShow = true),

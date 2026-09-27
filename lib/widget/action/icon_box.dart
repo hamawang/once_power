@@ -4,8 +4,8 @@ import 'package:once_power/config/theme/icon_box.dart';
 import 'package:once_power/const/num.dart';
 import 'package:once_power/provider/setting.dart';
 import 'package:once_power/widget/base/icon.dart';
+import 'package:once_power/widget/base/tooltip.dart';
 import 'package:once_power/widget/common/tooltip.dart';
-import 'package:tolyui_feedback/toly_tooltip/tooltip_placement.dart';
 
 class IconBox extends StatelessWidget {
   const IconBox({
@@ -34,7 +34,7 @@ class IconBox extends StatelessWidget {
 
     return EasyTooltip(
       tip: tip,
-      placement: Placement.right,
+      placement: TooltipDirection.right,
       child: Consumer(
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
           bool shadow = ref.watch(themeSettingProvider.select((e) => e.shadow));

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:once_power/widget/base/icon.dart';
+import 'package:once_power/widget/base/tooltip.dart';
 import 'package:once_power/widget/common/tooltip.dart';
-import 'package:tolyui_feedback/toly_tooltip/tooltip_placement.dart';
 
 class ClickIcon extends StatelessWidget {
   const ClickIcon({
     super.key,
     this.tip,
-    this.placement = Placement.right,
+    this.placement = TooltipDirection.right,
     this.icon,
     this.svg,
     this.size,
@@ -19,7 +19,7 @@ class ClickIcon extends StatelessWidget {
   });
 
   final String? tip;
-  final Placement placement;
+  final TooltipDirection placement;
   final IconData? icon;
   final String? svg;
   final double? size;

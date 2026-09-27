@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:once_power/widget/base/tooltip.dart';
 import 'package:once_power/widget/common/click_icon.dart';
-import 'package:tolyui_feedback/tolyui_feedback.dart';
 
 class BottomClickIcon extends StatelessWidget {
   const BottomClickIcon({
@@ -22,7 +22,7 @@ class BottomClickIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClickIcon(
       tip: tip,
-      placement: Placement.top,
+      placement: TooltipDirection.up,
       icon: icon,
       svg: svg,
       size: 24,
