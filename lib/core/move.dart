@@ -5,7 +5,6 @@ import 'package:once_power/enum/sort.dart';
 import 'package:once_power/model/file.dart';
 import 'package:once_power/provider/file.dart';
 import 'package:once_power/provider/list.dart';
-import 'package:once_power/provider/progress.dart';
 import 'package:once_power/provider/select.dart';
 import 'package:once_power/util/notification.dart';
 import 'package:once_power/util/selection.dart';
@@ -74,7 +73,8 @@ void toTheLast(WidgetRef ref, List<FileInfo> selectList) {
 }
 
 void suspenseFileList(WidgetRef ref, List<FileInfo> selectList) async {
-  if (selectList.length < ref.read(totalProvider)) {
+  int total = ref.read(fileListProvider).length;
+  if (selectList.length < total) {
     List<FileInfo> caches = [];
     for (FileInfo file in selectList) {
       caches.add(file);

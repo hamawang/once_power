@@ -406,7 +406,9 @@ List<FileInfo> splitSortList(List<FileInfo> fileList, bool reverse) {
   List<FileInfo> chineseList = [];
   List<FileInfo> otherList = [];
   for (FileInfo e in fileList) {
-    if (isChinese(e.name)) {
+    // 用 containsChinese 而不是 isChinese：后者只判断首字符，
+    // 「A报告」这类中英混合的名称会被误分到英文组，中文部分按码点排，顺序就乱了。
+    if (containsChinese(e.name)) {
       chineseList.add(e);
     } else {
       otherList.add(e);

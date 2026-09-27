@@ -12,6 +12,12 @@ bool isAll(String group) {
 
 bool isChinese(String text) => RegExp(r'^[\u4e00-\u9fa5]').hasMatch(text);
 
+/// 名称里是否包含中文（不要求首字符就是中文）
+///
+/// 排序分组用：只要含中文就归到中文组走拼音排序，
+/// 否则「A报告」这种首字符是英文的混合名称会被当成纯英文去按码点排。
+bool containsChinese(String text) => RegExp(r'[\u4e00-\u9fa5]').hasMatch(text);
+
 // bool isEnglish(BuildContext context) => context.locale == Locale('en', 'US');
 
 bool isCheckedClassify(WidgetRef ref, FileType classify) {
